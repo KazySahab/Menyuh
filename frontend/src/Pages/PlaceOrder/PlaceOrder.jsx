@@ -13,7 +13,7 @@ const {getTotalCartAmount}=useContext(StoreContext)
           <input type="text" placeholder="Last Name" />
         </div>
         <input type="email" placeholder="Email Address" />
-        <input type="number" placeholder="Phone Number" />
+        <input type="text" placeholder="Phone Number" />
       </div>
       <div className="place-order-right">
         <div className="cart-total">
