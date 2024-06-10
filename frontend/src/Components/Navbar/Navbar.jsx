@@ -24,7 +24,7 @@ const Navbar = () => {
           
           <div className={getTotalCartAmount()===0?"":"dot"}></div>
         </div>
-        <button>Sign In</button>
+        <button>My Order</button>
       </div>
     </div>
   );
