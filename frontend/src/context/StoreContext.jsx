@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 export const StoreContext = createContext(null);
 
@@ -12,6 +13,14 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState([]);
   const url = "http://localhost:4000";
 
+  const [customerUUID, setCustomerUUID] = useState(() => {
+    let uuid = localStorage.getItem("customerUUID");
+    if (!uuid) {
+      uuid = uuidv4();
+      localStorage.setItem("customerUUID", uuid);
+    }
+    return uuid;
+  });
   // Save cart items to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -69,6 +78,7 @@ const StoreContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     url,
+    customerUUID,
   };
 
   return (

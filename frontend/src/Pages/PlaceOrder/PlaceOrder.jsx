@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const PlaceOrder = ({}) => {
-  const { getTotalCartAmount, food_list, cartItems, url } =
+  const { getTotalCartAmount, food_list, cartItems, url, customerUUID} =
     useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -13,6 +13,7 @@ const PlaceOrder = ({}) => {
     lastName: "",
     email: "",
     phone: "",
+    customerUUID,
   });
 
 
@@ -33,12 +34,12 @@ const PlaceOrder = ({}) => {
       }
     });
     let orderData = {
+      userId:customerUUID,
       address:data,
-      phone:data.phone,
       items: orderItems,
       amount: getTotalCartAmount(),
     };
-    console.log(orderData);
+    console.log(data.phone);
     let response = await axios.post(url + "/api/order/place", orderData);
 
     if (response.data.success) {
@@ -48,10 +49,6 @@ const PlaceOrder = ({}) => {
         email: "",
         phone: "",
       });
-      // document.getElementById("firstName").value = "";
-      // document.getElementById("lastName").value = "";
-      // document.getElementById("email").value = "";
-      // document.getElementById("phone").value = "";
       toast.success(response.data.message);
       console.log(phone);
     } else {
@@ -59,7 +56,6 @@ const PlaceOrder = ({}) => {
     }
  
   };
-
   return (
     <form onSubmit={placeOrder} className="place-order">
       <div className="place-order-left">
