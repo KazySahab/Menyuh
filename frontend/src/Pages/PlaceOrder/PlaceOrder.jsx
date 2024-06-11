@@ -4,7 +4,7 @@ import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const PlaceOrder = () => {
+const PlaceOrder = ({}) => {
   const { getTotalCartAmount, food_list, cartItems, url } =
     useContext(StoreContext);
 
@@ -14,6 +14,7 @@ const PlaceOrder = () => {
     email: "",
     phone: "",
   });
+
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -56,6 +57,7 @@ const PlaceOrder = () => {
     } else {
       toast.error(response.data.message);
     }
+ 
   };
 
   return (
