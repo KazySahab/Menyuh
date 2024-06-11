@@ -1,18 +1,17 @@
 import orderModel from "../models/orderModel.js";
-import jwt from "jsonwebtoken"
+
 import userModel from "../models/userModel.js";
 
-const createtoken = (id) =>{
-    return jwt.sign({id},process.env.JWT_SECRET)
-}
+
+
 
 //Place user Order from frontend
 const placeOrder = async (req, res) => {
   try {
-    let user = await userModel.findOne({ customerId: req.body.customerId });
+    let user = await userModel.findOne({ userId: req.body.userId });
     if (!user) {
       const newUser = new userModel({
-        customerId: req.body.customerId
+        userId: req.body.userId
       });
       user = await newUser.save();
     }
@@ -23,11 +22,10 @@ const placeOrder = async (req, res) => {
       address: req.body.address,
     });
     
-  const token = createtoken(user._id)
-  res.json({success:true,token})
+ 
+  res.json({success:true,message:"Order Placed"})
 
     await newOrder.save()
-    //res.json({ success: true, message:"Order Placed" });
 
   } catch (error) {
     console.log(error);
