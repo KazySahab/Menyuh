@@ -52,6 +52,21 @@ const updateStatus = async (req, res) => {
       status: req.body.status,
     });
     res.json({ success: true, message: "Status Updated" });
+
+    
+    setTimeout(async () => {
+      try {
+        await orderModel.findByIdAndDelete(req.body.orderId);
+        console.log(`Order ${req.body.orderId} deleted after 30 seconds`);
+      } catch (deleteError) {
+        console.log(`Error deleting order ${req.body.orderId}:`, deleteError);
+      }
+    }, 24*60*60*1000);
+
+
+
+
+
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
