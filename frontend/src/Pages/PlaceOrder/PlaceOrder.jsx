@@ -62,6 +62,7 @@ const PlaceOrder = ({}) => {
       toast.error(response.data.message);
     }
     
+    
  
   };
   return (

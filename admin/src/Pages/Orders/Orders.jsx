@@ -1,3 +1,4 @@
+// Frontend code (React component)
 import React, { useState, useEffect } from "react";
 import "./Orders.css";
 import { toast } from "react-toastify";
@@ -13,6 +14,7 @@ const Orders = ({ url }) => {
       const response = await axios.get(url + "/api/order/list");
       if (response.data.success) {
         setOrders(response.data.data);
+        console.log(response.data.data);
       } else {
         toast.error("Error fetching orders");
       }
@@ -41,7 +43,7 @@ const Orders = ({ url }) => {
 
   const deleteOrder = async (orderId) => {
     try {
-      const response = await axios.post(url+"/api/order/delete",{orderId})
+      const response = await axios.post(url + "/api/order/delete", { orderId });
       if (response.data.success) {
         await fetchAllOrders();
         toast.success("Order deleted successfully");
@@ -61,10 +63,10 @@ const Orders = ({ url }) => {
   return (
     <div className="order-add">
       <h3>Order Page</h3>
-      <button onClick={()=>fetchAllOrders()} id="refresh_btn" >Refresh</button>
+      <button onClick={fetchAllOrders} id="refresh_btn">Refresh</button>
       <div className="order-list">
         {orders.slice().reverse().map((order, index) => (
-          <div key={index} className="order-item">
+          <div key={order._id} className="order-item">
             <img src={assets.parcel_icon} alt="Parcel Icon" />
             <div>
               <p className="order-item-food">
@@ -78,16 +80,24 @@ const Orders = ({ url }) => {
               <div className="order-item-name">
                 {order.address.firstName + " " + order.address.lastName}
               </div>
-              <p className="order-item-phone">{order.address.phone}</p>
+              <p className="order-item-phone">{order.address.phone} <br />{order.address.email} </p>
             </div>
             <p>Items: {order.items.length}</p>
             <p>Rs. {order.amount}</p>
-            <select onChange={(event) => statusHandler(event, order._id)} value={order.status}>
-              <option value="Food Processing">Food Processing</option>
+            <select
+            className={
+              order.status === 'Food Processing' ? 'food-processing' :
+              order.status === 'Out For Delivery' ? 'out-for-delivery' :
+              order.status === 'Delivered' ? 'delivered' : ''
+            }
+              onChange={(event) => statusHandler(event, order._id)}
+              value={order.status}
+            >
+              <option  value="Food Processing">Food Processing</option>
               <option value="Out For Delivery">Out For Delivery</option>
-              <option value="Delivered">Delivered</option>
+              <option  value="Delivered">Delivered</option>
             </select>
-            <button onClick={() => deleteOrder(order._id)}>Delete</button>
+            <button id="buttons" onClick={() => deleteOrder(order._id)}>Delete</button>
           </div>
         ))}
       </div>

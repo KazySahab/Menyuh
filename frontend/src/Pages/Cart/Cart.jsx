@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const { cartItems, food_list, removeFromCart,getTotalCartAmount } = useContext(StoreContext);
   const navigate = useNavigate();
+  const totalAmount = getTotalCartAmount();
   return (
     <div className="cart">
       <div className="cart-items">
@@ -56,7 +57,11 @@ const Cart = () => {
               <b>Rs. {getTotalCartAmount()}</b>
             </div> 
           </div>
-          <button onClick={()=>navigate('/order')}>PROCEED TO CHECKOUT</button>
+          {totalAmount > 0? (
+            <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
+          ) : (
+            <p className="empty_cart_message">Your cart is empty. Please add items to proceed to checkout.</p>
+          )}
         </div>
       </div>
     </div>

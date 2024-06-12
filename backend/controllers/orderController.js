@@ -72,7 +72,7 @@ const updateStatus = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    const deletedOrder = await orderModel.findOneAndDelete(req.body.orderId);
+    const deletedOrder = await orderModel.findOneAndDelete({_id:req.body.orderId});
     if (deletedOrder) {
       res.json({ success: true, message: "Order deleted successfully" });
     } else {
