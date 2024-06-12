@@ -3,8 +3,14 @@ import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 const PlaceOrder = ({}) => {
+  const navigate = useNavigate();
   const { getTotalCartAmount, food_list, cartItems, url, userId} =
     useContext(StoreContext);
 
@@ -29,8 +35,9 @@ const PlaceOrder = ({}) => {
     food_list.map((item) => {
       if (cartItems[item._id] > 0) {
         let itemInfo = item;
-        itemInfo["quantity"] = cartItems[cartItems._id];
+        itemInfo["quantity"] = cartItems[item._id];
         orderItems.push(itemInfo);
+        console.log(orderItems);
       }
     });
     let orderData = {
@@ -40,7 +47,6 @@ const PlaceOrder = ({}) => {
       amount: getTotalCartAmount(),
     };
     let response = await axios.post(url + "/api/order/place", orderData);
-
     if (response.data.success) {
       setData({
         firstName: "",
@@ -49,9 +55,13 @@ const PlaceOrder = ({}) => {
         phone: "",
       });
       toast.success(response.data.message);
+      setTimeout(() => {
+        navigate('/myorders');
+      }, 2000);
     } else {
       toast.error(response.data.message);
     }
+    
  
   };
   return (
@@ -116,7 +126,7 @@ const PlaceOrder = ({}) => {
               <b>Rs. {getTotalCartAmount()}</b>
             </div>
           </div>
-          <button type="submit">PROCEED TO PAYMENT</button>
+          <button type="submit">Place Order</button>
         </div>
       </div>
     </form>

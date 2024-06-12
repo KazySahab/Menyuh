@@ -12,6 +12,7 @@ const StoreContextProvider = (props) => {
     let uuid = localStorage.getItem("userId");
     if (!uuid) {
       uuid = uuidv4();
+     
       localStorage.setItem("userId", uuid);
     }
     return uuid;
@@ -76,6 +77,16 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const createUserIfNotExists = async () => {
+    try {
+      const response = await axios.post(`${url}/api/user/login`, { userId });
+      console.log(response.data); // Handle the response from the server
+    } catch (error) {
+      console.error("Error creating user:", error);
+      // Handle error
+    }
+  };
+
   useEffect(() => {
     const loadData = async () => {
       await fetchFoodList();
@@ -86,6 +97,8 @@ const StoreContextProvider = (props) => {
     };
     loadData();
   }, []);
+
+  createUserIfNotExists();
 
   const contextValue = {
     food_list,

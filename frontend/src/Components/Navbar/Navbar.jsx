@@ -2,9 +2,11 @@ import React, { useContext, useState } from 'react'; // Import useState from Rea
 import './Navbar.css';
 import { assets } from '../../assets/assets';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { StoreContext } from '../../context/StoreContext';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState("home");
   const {getTotalCartAmount}= useContext(StoreContext);
 
@@ -24,7 +26,7 @@ const Navbar = () => {
           
           <div className={getTotalCartAmount()===0?"":"dot"}></div>
         </div>
-        <button>My Order</button>
+        <button onClick={()=>navigate('/myorders')}>My Order</button>
       </div>
     </div>
   );
