@@ -64,13 +64,24 @@ const updateStatus = async (req, res) => {
     }, 24*60*60*1000);
 
 
-
-
-
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
   }
 };
 
-export { placeOrder, userOrders, listOrders, updateStatus };
+const deleteOrder = async (req, res) => {
+  try {
+    const deletedOrder = await orderModel.findOneAndDelete(req.body.orderId);
+    if (deletedOrder) {
+      res.json({ success: true, message: "Order deleted successfully" });
+    } else {
+      res.json({ success: false, message: "Order not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error deleting order" });
+  }
+};
+
+export { placeOrder, userOrders, listOrders, updateStatus,deleteOrder };

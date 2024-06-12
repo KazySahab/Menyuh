@@ -9,6 +9,7 @@ const Orders = ({ url }) => {
 
   const fetchAllOrders = async () => {
     try {
+      console.log("refreshed");
       const response = await axios.get(url + "/api/order/list");
       if (response.data.success) {
         setOrders(response.data.data);
@@ -38,6 +39,21 @@ const Orders = ({ url }) => {
     }
   };
 
+  const deleteOrder = async (orderId) => {
+    try {
+      const response = await axios.post(url+"/api/order/delete",{orderId})
+      if (response.data.success) {
+        await fetchAllOrders();
+        toast.success("Order deleted successfully");
+      } else {
+        toast.error("Error deleting order");
+      }
+    } catch (error) {
+      toast.error("Error deleting order");
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchAllOrders();
   }, []);
@@ -45,6 +61,7 @@ const Orders = ({ url }) => {
   return (
     <div className="order-add">
       <h3>Order Page</h3>
+      <button onClick={()=>fetchAllOrders()} id="refresh_btn" >Refresh</button>
       <div className="order-list">
         {orders.slice().reverse().map((order, index) => (
           <div key={index} className="order-item">
@@ -70,6 +87,7 @@ const Orders = ({ url }) => {
               <option value="Out For Delivery">Out For Delivery</option>
               <option value="Delivered">Delivered</option>
             </select>
+            <button onClick={() => deleteOrder(order._id)}>Delete</button>
           </div>
         ))}
       </div>

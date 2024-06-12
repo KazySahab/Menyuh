@@ -16,12 +16,20 @@
     margin-top: 30px;
     margin-bottom: 5px;
 }
-.order-item select{
+.order-item select, button{
     background-color: wheat;
     border: 1px solid gray;
     width: max(10vw,120px);
     padding: 10px;
     outline: none;
+}
+#refresh_btn{
+    position: relative;
+    left:83.8%;
+}
+
+button:active{
+    background-color: rgb(240, 190, 97);
 }
 
 @media (max-width:800px)
